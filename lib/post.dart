@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class PostPage extends StatefulWidget {
-  const PostPage({super.key});
-  PostPage(this.user);
+  const PostPage(this.user, {Key? key}) : super(key: key); //constを削除しKeyをオプションに
   final User user;
 
   @override

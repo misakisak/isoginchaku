@@ -63,6 +63,7 @@ class _SignInPageState extends State<SignInPage> {
           onPressed: () async {
             await signInWithGoogle();
             // ログインが成功すると FirebaseAuth.instance.currentUser にログイン中のユーザーの情報が入ります
+            //final User? user = FirebaseAuth.instance.currentUser;
             print(FirebaseAuth.instance.currentUser?.displayName);
             Navigator.push(
               context,

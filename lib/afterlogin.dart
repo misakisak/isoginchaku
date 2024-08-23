@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/post.dart';
@@ -29,11 +30,14 @@ class AfterLoginPage extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () async {
           // 投稿画面に遷移
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) {
-              return PostPage(??);
-            }),
-          );
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return PostPage(user);
+              }),
+            );
+          }
         },
       ),
     );
