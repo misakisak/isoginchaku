@@ -11,6 +11,7 @@ Future<void> main() async {
     // これが Firebase の初期化処理です。
     options: DefaultFirebaseOptions.android,
   );
+  
   runApp(const MyApp());
 }
 
