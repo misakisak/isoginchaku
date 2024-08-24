@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+// firestoreをインポートする
 
 Future<void> main() async {
   // main 関数でも async が使えます
@@ -63,6 +64,8 @@ class _SignInPageState extends State<SignInPage> {
           onPressed: () async {
             await signInWithGoogle();
             // ログインが成功すると FirebaseAuth.instance.currentUser にログイン中のユーザーの情報が入ります
+            // このFirebaseAuth.instance.currentUserから、afterloginのページで情報を取ってくる
+            // ６９行目のコメントアウトしてるところはafterloginにあるのと同じ処理で、二か所で同じことやる必要ないかなと思って消した。（あってもなくても特に変化はなかった。）
             //final User? user = FirebaseAuth.instance.currentUser;
             print(FirebaseAuth.instance.currentUser?.displayName);
             Navigator.push(
