@@ -49,8 +49,16 @@ class _PostPageState extends State<PostPage> {
                     final email = widget.user.email; // AddPostPage のデータを参照
                     // 投稿メッセージ用ドキュメント作成
                     await FirebaseFirestore.instance
-                        .collection('posts') // コレクションID指定
-                        .doc() // ドキュメントID自動生成
+                        .collection('posts')
+                        // コレクションID指定
+                        .doc('thisisatestid00')
+                        // ドキュメントID自動生成←これを自動生成じゃなくする、下にcollectionを繋げればできるはず
+                        // 例えばトイレ１を選択してポストのボタンを押すと、投稿画面にいって、投稿すると、
+                        // まず、トイレのコレクションにいって、さらにその緯度経度を連結したIDのドキュメントにいく
+                        // さらにそのドキュメントの中に、今投稿ボタンを押しているから、ratingに移動する
+                        // そのratingの中にランダムなIDを持つ投稿が反映される
+                        .collection('rating')
+                        .doc()
                         .set({
                       'text': messageText,
                       'email': email,
