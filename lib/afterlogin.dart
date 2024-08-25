@@ -18,42 +18,6 @@ import 'src/parkingLoc.dart' as parkingLoc;
 
 import 'dart:developer' as developer;
 
-_showMultiChoiceDialog(BuildContext context) => showDialog(
-  context: context,
-  builder: (context) {
-    final _multipleNotifier = Provider.of<MultipleNotifier>(context);
-    return AlertDialog(
-      title: Text("Filters"),
-      content: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: places
-              .map((e) => CheckboxListTile(
-                title: Text(e),
-                onChanged: (value) {
-                  value!
-                    ? _multipleNotifier.addItem(e)
-                    : _multipleNotifier.removeItem(e);
-                },
-                value: _multipleNotifier.isHaveItem(e),
-              ))
-              .toList(),
-          ),
-        ),
-      ),
-      actions: [
-        ElevatedButton(
-          child: Text("Yes"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  },
-);
 
 class AfterLoginPage extends StatefulWidget {
   // const AfterLoginPage({super.key});
@@ -72,6 +36,8 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
   final _controller = DraggableScrollableController();
 
   final Map<String, Marker> _markers = {};
+
+  Key _mapKey = UniqueKey();
 
 
   @override
@@ -140,6 +106,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
       for (final toilet in toiletData) {
         // // Log the exact latitude and longitude values
         // print("Adding marker for: ${toilet.toiletName}, Lat: ${toilet.toiletLatitude}, Long: ${toilet.toiletLongitude}");
+        
           
         final marker = Marker(
           markerId: MarkerId(toilet.toiletName),
@@ -223,7 +190,129 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
       }
 
     });
+
   }
+
+  void _updateMarkers(List<String> selectedFilters) async {
+
+    setState(() {
+      _markers.clear();
+
+      if (selectedFilters.contains("Parking space")) {
+        print("Parking selected");
+        _addMarkersForOption1();
+      }
+      if (selectedFilters.contains("Charging point")) {
+        _addMarkersForOption2();
+      }
+     
+
+    });
+    
+  }
+
+  Future<void> _addMarkersForOption1() async {
+    // Logic to fetch data and add markers for Option1
+    final parkingData = await parkingLoc.fetchParkingData();
+
+    for (final parking in parkingData) {
+      // Log the exact latitude and longitude values
+      // print("Adding marker for: ${parking.parkingTitle}, Lat: ${parking.parkingLatitude}, Long: ${parking.parkingLongitude}");
+        
+      final marker = Marker(
+        markerId: MarkerId(parking.parkingTitle),
+        position: LatLng(parking.parkingLatitude, parking.parkingLongitude),
+        infoWindow: InfoWindow(
+          title: parking.parkingTitle,
+          snippet: parking.parkingPhone,
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+        onTap: () {
+          print("Tokyo marker tapped! ${parking.parkingLatitude}");
+          _expandSheet(); // Expand the sheet when marker is tapped
+        },
+      );
+      _markers[parking.parkingTitle] = marker;
+    }
+    print("markers: ${_markers}");
+
+  }
+
+  Future<void> _addMarkersForOption2() async {
+    // Logic to fetch data and add markers for Option1
+    final lanData = await lanLoc.fetchLanData();
+
+    for (final lan in lanData) {
+      // Log the exact latitude and longitude values
+      // print("Adding marker for: ${lan.lanName}, Lat: ${lan.lanLatitude}, Long: ${lan.lanLongitude}");
+        
+      final marker = Marker(
+        markerId: MarkerId(lan.lanName),
+        position: LatLng(lan.lanLatitude, lan.lanLongitude),
+        infoWindow: InfoWindow(
+          title: lan.lanName,
+          snippet: lan.lanSSID,
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        onTap: () {
+          _expandSheet(); // Expand the sheet when marker is tapped
+          print("Tokyo marker tapped! ${lan.lanLatitude}");
+        },
+      );
+      _markers[lan.lanName] = marker;
+    }
+    print("markers: ${_markers}");
+
+  }
+
+  void _refreshMap() {
+    setState(() {
+      // The GoogleMap widget rebuilds with the updated markers
+      // Any additional logic for refreshing the map can be added here
+    });
+  }
+
+  _showMultiChoiceDialog(BuildContext context) => showDialog(
+    context: context,
+    builder: (context) {
+      final _multipleNotifier = Provider.of<MultipleNotifier>(context);
+      return AlertDialog(
+        title: Text("Filters"),
+        content: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: places
+                .map((e) => CheckboxListTile(
+                  title: Text(e),
+                  onChanged: (value) {
+                    value!
+                      ? _multipleNotifier.addItem(e)
+                      : _multipleNotifier.removeItem(e);
+                      // print("Current selected items: ${_multipleNotifier.selectedItems}"); // Debug statement
+                  },
+                  value: _multipleNotifier.isHaveItem(e),
+                ))
+                .toList(),
+            ),
+          ),
+        ),
+        actions: [
+          ElevatedButton(
+            child: Text("Yes"),
+            onPressed: () {
+              print("Current selected items: ${_multipleNotifier.selectedItems}"); // Debug statement
+              Navigator.of(context).pop();
+              _updateMarkers(_multipleNotifier.selectedItems);
+            },
+          ),
+        ],
+      );
+    },
+    
+  );
+
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +369,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
               },
             ),
             GoogleMap(
+              key: _mapKey,
               onMapCreated: _onMapCreated,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(35.7150046548125, 139.79697716509338), // Tokyo coordinates as initial position
@@ -287,18 +377,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
               ),
               markers: _markers.values.toSet(),
             ),
-            // Column(
-            //   children:[
-            //     ListTile.divideTiles(context: context, tiles: [
-            //       //この下がmultipleの時のlisttileへの指示
-            //       ListTile(
-            //         title: Text('Multiple choice Dialog'),
-            //         onTap: () => _showMultiChoiceDialog(context),
-            //       )
-            //     ]).toList(),
-            //   ]
-             
-            // ),
+ 
             Column(
               children: ListTile.divideTiles(
                 context: context,
