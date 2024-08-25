@@ -6,6 +6,8 @@ import 'package:flutter_application_1/post.dart';
 import 'package:flutter_application_1/pages/data.dart';
 import 'package:flutter_application_1/pages/notifiers.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_application_1/pages/settings.dart';
+import 'package:flutter_application_1/pages/FAQs.dart';
 
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -265,6 +267,53 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
 
   }
 
+  Future<void> _addMarkersForOption3() async {
+    // Logic to fetch data and add markers for Option1
+    final libraryData = await libraryLoc.fetchLibraryData();
+
+    for (final library in libraryData) {
+      // Log the exact latitude and longitude values
+      // print("Adding marker for: ${library.libraryName}, Lat: ${library.libraryLatitude}, Long: ${library.libraryLongitude}");
+        
+      final marker = Marker(
+        markerId: MarkerId(library.libraryName),
+        position: LatLng(library.libraryLatitude, library.libraryLongitude),
+        infoWindow: InfoWindow(
+          title: library.libraryName,
+          snippet: library.libraryDate,
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+        onTap: () {
+          _expandSheet(); // Expand the sheet when marker is tapped
+          print("Tokyo marker tapped! ${library.libraryLatitude}");
+        },
+      );
+      _markers[library.libraryName] = marker;
+    }
+
+  }
+
+  Future<void> _addMarkersForOption4() async {
+    final kitsuenjoData = await kitsuenjoLoc.fetchKitsuenjoData();
+    for (final kitsuenjo in kitsuenjoData) {
+        print("Adding marker for: ${kitsuenjo.kitsuenjoTitle}, Lat: ${kitsuenjo.kitsuenjoLatitude}, Long: ${kitsuenjo.kitsuenjoLongitude}"); // Debug statement
+        final marker = Marker(
+          markerId: MarkerId(kitsuenjo.kitsuenjoTitle),
+          position: LatLng(kitsuenjo.kitsuenjoLatitude, kitsuenjo.kitsuenjoLongitude),
+          infoWindow: InfoWindow(
+            title: kitsuenjo.kitsuenjoTitle,
+            snippet: kitsuenjo.kitsuenjoStartTime,
+          ),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+          onTap: () {
+            _expandSheet(); // Expand the sheet when marker is tapped
+            print("Tokyo marker tapped! ${kitsuenjo.kitsuenjoLatitude}");
+          },
+        );
+        _markers[kitsuenjo.kitsuenjoTitle] = marker;
+    }
+  }
+
   void _refreshMap() {
     setState(() {
       // The GoogleMap widget rebuilds with the updated markers
@@ -277,7 +326,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
     builder: (context) {
       final _multipleNotifier = Provider.of<MultipleNotifier>(context);
       return AlertDialog(
-        title: Text("Filters"),
+        title: Text("絞り込み"),
         content: SingleChildScrollView(
           child: Container(
             width: double.infinity,
@@ -300,7 +349,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
         ),
         actions: [
           ElevatedButton(
-            child: Text("Yes"),
+            child: Text("確定"),
             onPressed: () {
               print("Current selected items: ${_multipleNotifier.selectedItems}"); // Debug statement
               Navigator.of(context).pop();
@@ -321,23 +370,94 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
       home: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("After login & Map"),
-          actions: <Widget>[
-            IconButton(
-              // この下はログイン画面に戻る動きを書いてある。
-              icon: Icon(Icons.close),
-              onPressed: () async {
-                // ログイン画面に遷移＋チャット画面を破棄
-                await Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) {
-                    return SignInPage();
-                  }),
-                );
-              },
-            ),
-          ],
+          title: Text(
+            "ホーム",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          backgroundColor: Colors.teal,
+          // actions: <Widget>[
+          //   IconButton(
+          //     // この下はログイン画面に戻る動きを書いてある。
+          //     icon: Icon(Icons.close),
+          //     onPressed: () async {
+          //       // ログイン画面に遷移＋チャット画面を破棄
+          //       await Navigator.of(context).pushReplacement(
+          //         MaterialPageRoute(builder: (context) {
+          //           return SignInPage();
+          //         }),
+          //       );
+          //     },
+          //   ),
+          // ],
         ),
-
+        drawer: Drawer(
+          backgroundColor: Colors.teal[400],
+          child: Column(
+            children: [
+              DrawerHeader(
+                  child: Icon(
+                Icons.favorite,
+                color: Colors.white,
+              )),
+              ListTile(
+                leading: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'ホーム',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AfterLoginPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  '設定',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SettingsPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.question_answer,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'よくある質問',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FaqPage(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
         body: Stack(
           children: [
             DraggableScrollableSheet(
@@ -377,26 +497,53 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
               ),
               markers: _markers.values.toSet(),
             ),
+            Center(
+              child: ListView(
+                  children: ListTile.divideTiles(context: context, tiles: [
+                            //この下がmultipleの時のlisttileへの指示
+                            ElevatedButton(
+                              child: Text(
+                                '絞り込み',
+                                style: TextStyle(color: Colors.teal[900]),
+                              ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0), // 任意の角丸さを指定
+                        ),
+                      ),
+                      onPressed: () => _showMultiChoiceDialog(context),
+                    )
+                  ]).toList()
+                )
+              ),
  
-            Column(
-              children: ListTile.divideTiles(
-                context: context,
-                tiles: [
-                  // multiple choice dialog ListTile
-                  ListTile(
-                    title: Text('Multiple choice Dialog'),
-                    onTap: () => _showMultiChoiceDialog(context),
-                  ),
-                  // Add more ListTiles here if necessary
-                ],
-              ).toList(),
-            )
+            // Column(
+            //   children: ListTile.divideTiles(
+            //     context: context,
+            //     tiles: [
+            //       // multiple choice dialog ListTile
+            //       ListTile(
+            //         title: Text(
+            //           '絞り込み',
+            //           style: TextStyle(color: Colors.teal[900]),
+            //         ),
+            //         onTap: () => _showMultiChoiceDialog(context),
+            //       ),
+            //       // Add more ListTiles here if necessary
+            //     ],
+            //   ).toList(),
+            // )
           ]
         ),
         
         // この下は投稿画面（postpage）に移動するボタンと動きを書いてる。
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Colors.teal[900],
+          ),
+          backgroundColor: Colors.white,
           onPressed: () async {
             // 投稿画面に遷移
             // この下のuserにFirebaseにあるユーザー情報を入れた。ここが元のと変わったところの一つ。

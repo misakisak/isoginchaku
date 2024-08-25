@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/pages/notifiers.dart';
+import 'package:flutter_application_1/pages/first_page.dart';
+
 
 
 // firestoreをインポートする
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(),
+      debugShowCheckedModeBanner: false,
       home: const SignInPage(),
     );
   }
@@ -87,13 +90,54 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.teal,
       appBar: AppBar(
-        title: const Text('GoogleSignIn'),
+        centerTitle: true,
+        title: Text(
+            "ここが始まりだ",
+            style: TextStyle(
+                fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
+         backgroundColor: Colors.teal
       ),
       body: Center(
-        child: ElevatedButton(
-          //この中はボタンについての設定
-          child: const Text('GoogleSignIn'),
+          child: ElevatedButton(
+            //この中はボタンについての設定
+            // child: const Text('GoogleSignIn'),
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(),
+              ),
+              Expanded(
+                flex: 5,
+                child: Container(
+                  child: ElevatedButton(
+                    child: Text(
+                      "Googleでサインインして冒険を始めよう",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.teal[900]),
+                    ),
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FirstPage()),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(),
+              ),
+            ],
+          ),
           onPressed: () async {
             await signInWithGoogle();
             // ログインが成功すると FirebaseAuth.instance.currentUser にログイン中のユーザーの情報が入ります
