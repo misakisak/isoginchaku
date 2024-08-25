@@ -14,6 +14,7 @@ class AfterLoginPage extends StatelessWidget {
         title: Text("After login"),
         actions: <Widget>[
           IconButton(
+            // この下はログイン画面に戻る動きを書いてある。
             icon: Icon(Icons.close),
             onPressed: () async {
               // ログイン画面に遷移＋チャット画面を破棄
@@ -26,10 +27,12 @@ class AfterLoginPage extends StatelessWidget {
           ),
         ],
       ),
+      // この下は投稿画面（postpage）に移動するボタンと動きを書いてる。
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
           // 投稿画面に遷移
+          // この下のuserにFirebaseにあるユーザー情報を入れた。ここが元のと変わったところの一つ。
           final user = FirebaseAuth.instance.currentUser;
           if (user != null) {
             await Navigator.of(context).push(
