@@ -5,7 +5,28 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+import 'package:provider/provider.dart';
+import 'package:isoginchaku/pages/notifiers.dart';
+
+
 // firestoreをインポートする
+
+// void main() {
+//   runApp(MultiProvider(
+//     providers: [
+//       ChangeNotifierProvider<SingleNotifier>(
+//         create: (_) => SingleNotifier(),
+//       ),
+//       //上を入れたときにproviderはpub.yamlに入れたので、下でmultipleの時を追加で宣言する。
+//       ChangeNotifierProvider<MultipleNotifier>(
+//         create: (_) => MultipleNotifier([]),
+//       )
+//     ],
+//     child: MyApp(),
+//   ));
+// }
 
 Future<void> main() async {
   // main 関数でも async が使えます
@@ -14,7 +35,19 @@ Future<void> main() async {
     // これが Firebase の初期化処理です。
     options: DefaultFirebaseOptions.android,
   );
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      // ChangeNotifierProvider<SingleNotifier>(
+      //   create: (_) => SingleNotifier(),
+      // ),
+      //上を入れたときにproviderはpub.yamlに入れたので、下でmultipleの時を追加で宣言する。
+      ChangeNotifierProvider<MultipleNotifier>(
+        create: (_) => MultipleNotifier([]),
+      )
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

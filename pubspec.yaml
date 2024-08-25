@@ -43,6 +43,7 @@ dependencies:
   cloud_firestore: ^5.2.1
   google_maps_flutter_web: ^0.5.10
   google_maps_flutter: ^2.9.0
+  provider: ^6.1.2
   #check https://codelabs.developers.google.com/codelabs/google-maps-in-flutter?hl=ja#4
   #about ピンの表示google map 
 
