@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:isoginchaku/main.dart';
-import 'package:isoginchaku/post.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/post.dart';
 
-import 'package:isoginchaku/pages/data.dart';
-import 'package:isoginchaku/pages/notifiers.dart';
+import 'package:flutter_application_1/pages/data.dart';
+import 'package:flutter_application_1/pages/notifiers.dart';
 import 'package:provider/provider.dart';
 
 
@@ -287,13 +287,31 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
               ),
               markers: _markers.values.toSet(),
             ),
-            ListTile.divideTiles(context: context, tiles: [
-              //この下がmultipleの時のlisttileへの指示
-              ListTile(
-                title: Text('Multiple choice Dialog'),
-                onTap: () => _showMultiChoiceDialog(context),
-              )
-            ]).toList(),
+            // Column(
+            //   children:[
+            //     ListTile.divideTiles(context: context, tiles: [
+            //       //この下がmultipleの時のlisttileへの指示
+            //       ListTile(
+            //         title: Text('Multiple choice Dialog'),
+            //         onTap: () => _showMultiChoiceDialog(context),
+            //       )
+            //     ]).toList(),
+            //   ]
+             
+            // ),
+            Column(
+              children: ListTile.divideTiles(
+                context: context,
+                tiles: [
+                  // multiple choice dialog ListTile
+                  ListTile(
+                    title: Text('Multiple choice Dialog'),
+                    onTap: () => _showMultiChoiceDialog(context),
+                  ),
+                  // Add more ListTiles here if necessary
+                ],
+              ).toList(),
+            )
           ]
         ),
         

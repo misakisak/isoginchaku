@@ -1,4 +1,4 @@
-import 'package:isoginchaku/pages/data.dart';
+import 'package:flutter_application_1/pages/data.dart';
 // import 'package:flutter_myapplication_1/pages/data.dart';
 import 'package:flutter/material.dart';
 

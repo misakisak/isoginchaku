@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 import 'package:provider/provider.dart';
-import 'package:isoginchaku/pages/notifiers.dart';
+import 'package:flutter_application_1/pages/notifiers.dart';
 
 
 // firestoreをインポートする
@@ -38,9 +38,9 @@ Future<void> main() async {
   // runApp(const MyApp());
   runApp(MultiProvider(
     providers: [
-      // ChangeNotifierProvider<SingleNotifier>(
-      //   create: (_) => SingleNotifier(),
-      // ),
+      ChangeNotifierProvider<SingleNotifier>(
+        create: (_) => SingleNotifier(),
+      ),
       //上を入れたときにproviderはpub.yamlに入れたので、下でmultipleの時を追加で宣言する。
       ChangeNotifierProvider<MultipleNotifier>(
         create: (_) => MultipleNotifier([]),
