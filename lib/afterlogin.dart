@@ -375,20 +375,6 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           backgroundColor: Colors.teal,
-          // actions: <Widget>[
-          //   IconButton(
-          //     // この下はログイン画面に戻る動きを書いてある。
-          //     icon: Icon(Icons.close),
-          //     onPressed: () async {
-          //       // ログイン画面に遷移＋チャット画面を破棄
-          //       await Navigator.of(context).pushReplacement(
-          //         MaterialPageRoute(builder: (context) {
-          //           return SignInPage();
-          //         }),
-          //       );
-          //     },
-          //   ),
-          // ],
         ),
         drawer: Drawer(
           backgroundColor: Colors.teal[400],
@@ -499,44 +485,69 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
             ),
             Center(
               child: ListView(
-                  children: ListTile.divideTiles(context: context, tiles: [
-                            //この下がmultipleの時のlisttileへの指示
-                            ElevatedButton(
-                              child: Text(
-                                '絞り込み',
-                                style: TextStyle(color: Colors.teal[900]),
-                              ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0), // 任意の角丸さを指定
+                children: ListTile.divideTiles(context: context, tiles: [
+                      //この下がmultipleの時のlisttileへの指示
+                      ElevatedButton(
+                        child: Text(
+                          '絞り込み',
+                          style: TextStyle(color: Colors.teal[900]),
                         ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0), // 任意の角丸さを指定
                       ),
-                      onPressed: () => _showMultiChoiceDialog(context),
-                    )
-                  ]).toList()
-                )
-              ),
- 
-            // Column(
-            //   children: ListTile.divideTiles(
-            //     context: context,
-            //     tiles: [
-            //       // multiple choice dialog ListTile
-            //       ListTile(
-            //         title: Text(
+                    ),
+                    onPressed: () => _showMultiChoiceDialog(context),
+                  )
+                ]).toList()
+              )
+            ),
+            
+            // Positioned(
+            //   bottom: 20,
+            //   left: 0,
+            //   right: 0,
+            //   child: Center(
+            //     child: Align(
+            //       alignment: Alignment.topLeft,
+            //       ElevatedButton(
+            //         child: Text(
             //           '絞り込み',
             //           style: TextStyle(color: Colors.teal[900]),
             //         ),
-            //         onTap: () => _showMultiChoiceDialog(context),
+            //         style: ElevatedButton.styleFrom(
+            //           backgroundColor: Colors.white,
+            //           shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(0), // Customize as needed
+            //           ),
+            //         ),
+            //         onPressed: () => _showMultiChoiceDialog(context),
+            //       )
+            //     ),
+            //   ),
+            // ),
+            
+            // Align(
+            //   alignment: Alignment.topLeft,
+            //   ElevatedButton(
+            //     child: Text(
+            //       '絞り込み',
+            //       style: TextStyle(color: Colors.teal[900]),
+            //     ),
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.white,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(0), // Customize as needed
             //       ),
-            //       // Add more ListTiles here if necessary
-            //     ],
-            //   ).toList(),
-            // )
+            //     ),
+            //     onPressed: () => _showMultiChoiceDialog(context),
+            //   )
+            // ),
+            
           ]
         ),
-        
+               
         // この下は投稿画面（postpage）に移動するボタンと動きを書いてる。
         floatingActionButton: FloatingActionButton(
           child: Icon(
@@ -561,6 +572,4 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
       ),
     );
   }
-
-
 }
