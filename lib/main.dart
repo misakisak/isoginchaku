@@ -5,13 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-<<<<<<< HEAD
-// firestoreをインポートする
-=======
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/pages/notifiers.dart';
 import 'package:flutter_application_1/pages/first_page.dart';
->>>>>>> errors_with_notifiers
 
 Future<void> main() async {
   // main 関数でも async が使えます
@@ -56,13 +52,7 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   Future<void> signInWithGoogle() async {
     // GoogleSignIn をして得られた情報を Firebase と関連づけることをやっています。
-<<<<<<< HEAD
-    final googleUser =
-        await GoogleSignIn(scopes: ['profile', 'email']).signIn();
-
-=======
     final googleUser = await GoogleSignIn(scopes: ['profile', 'email']).signIn();
->>>>>>> errors_with_notifiers
     final googleAuth = await googleUser?.authentication;
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
@@ -88,9 +78,6 @@ class _SignInPageState extends State<SignInPage> {
       body: Center(
         child: ElevatedButton(
           //この中はボタンについての設定
-<<<<<<< HEAD
-          child: const Text('GoogleSignIn'),
-=======
           // child: const Text('GoogleSignIn'),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +113,6 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ],
           ),
->>>>>>> errors_with_notifiers
           onPressed: () async {
             await signInWithGoogle();
             // ログインが成功すると FirebaseAuth.instance.currentUser にログイン中のユーザーの情報が入ります

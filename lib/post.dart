@@ -52,16 +52,6 @@ class _PostPageState extends State<PostPage> {
                     // 投稿メッセージ用ドキュメント作成
                     // この下がfirestoreに関する設定。コレクションの作成など。これを作ることで自動で色々入力される。
                     await FirebaseFirestore.instance
-<<<<<<< HEAD
-                        .collection('posts') // コレクションID指定
-                        .doc() // ドキュメントID自動生成
-                        .set({
-                          // messageTextがどこからやってきたのか分かってないけど、dateとemailは上で設定したものを持ってきている。
-                      'text': messageText,
-                      'email': email,
-                      'date': date
-                    });
-=======
                          .collection('posts')
                         // コレクションID指定
                         .doc('thisisatestid00')
@@ -78,7 +68,6 @@ class _PostPageState extends State<PostPage> {
                               'email': email,
                               'date': date
                          });
->>>>>>> errors_with_notifiers
                     // 1つ前の画面に戻る
                     Navigator.of(context).pop();
                   },
@@ -90,8 +79,4 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> errors_with_notifiers

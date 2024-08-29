@@ -38,10 +38,6 @@ dependencies:
   firebase_auth: ^5.1.4
   firebase_core: ^3.3.0
   google_sign_in: ^6.2.1
-<<<<<<< HEAD
-  # この下にfirestoreを追加でインストールした
-  cloud_firestore: ^5.2.1
-=======
   http: ^1.2.2
   json_serializable: ^6.8.0
   cloud_firestore: ^5.2.1
@@ -50,7 +46,6 @@ dependencies:
   provider: ^6.1.2
   #check https://codelabs.developers.google.com/codelabs/google-maps-in-flutter?hl=ja#4
   #about ピンの表示google map 
->>>>>>> errors_with_notifiers
 
 dev_dependencies:
   flutter_test:
