@@ -114,8 +114,8 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
               _isButtonVisible = true; // Show button when marker is tapped
               markerDataList.clear();
               markerDataList.add("toilet");
-              // markerDataList.add(toilet.toiletLatitude);
-              // markerDataList.add(toilet.toiletLongitude);
+              markerDataList.add(toilet.toiletLatitude);
+              markerDataList.add(toilet.toiletLongitude);
               markerDataList.add(toilet.toiletTown);
               markerDataList.add(toilet.toiletName);
               markerDataList.add(toilet.toiletInfo);
