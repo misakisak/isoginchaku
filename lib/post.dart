@@ -52,6 +52,7 @@ class _PostPageState extends State<PostPage> {
                     // 投稿メッセージ用ドキュメント作成
                     // この下がfirestoreに関する設定。コレクションの作成など。これを作ることで自動で色々入力される。
                     await FirebaseFirestore.instance
+<<<<<<< HEAD
                         .collection('posts') // コレクションID指定
                         .doc() // ドキュメントID自動生成
                         .set({
@@ -60,6 +61,24 @@ class _PostPageState extends State<PostPage> {
                       'email': email,
                       'date': date
                     });
+=======
+                         .collection('posts')
+                        // コレクションID指定
+                        .doc('thisisatestid00')
+                        // ドキュメントID自動生成←これを自動生成じゃなくする、下にcollectionを繋げればできるはず
+                        // 例えばトイレ１を選択してポストのボタンを押すと、投稿画面にいって、投稿すると、
+                        // まず、トイレのコレクションにいって、さらにその緯度経度を連結したIDのドキュメントにいく
+                        // さらにそのドキュメントの中に、今投稿ボタンを押しているから、ratingに移動する
+                        // そのratingの中にランダムなIDを持つ投稿が反映される
+                         .collection('rating')
+                         .doc()
+                         .set({
+                              // messageTextがどこからやってきたのか分かってないけど、dateとemailは上で設定したものを持ってきている。
+                              'text': messageText,
+                              'email': email,
+                              'date': date
+                         });
+>>>>>>> errors_with_notifiers
                     // 1つ前の画面に戻る
                     Navigator.of(context).pop();
                   },
@@ -71,4 +90,8 @@ class _PostPageState extends State<PostPage> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> errors_with_notifiers
