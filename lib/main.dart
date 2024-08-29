@@ -122,7 +122,7 @@ class _SignInPageState extends State<SignInPage> {
             print(FirebaseAuth.instance.currentUser?.displayName);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AfterLoginPage()),
+              MaterialPageRoute(builder: (context) => FirstPage()),
             );
           },
         ),
