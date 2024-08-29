@@ -371,6 +371,7 @@ class _AfterLoginPageState extends State<AfterLoginPage> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
           centerTitle: true,
           title: Text(
             "ホーム",

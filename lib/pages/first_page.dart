@@ -15,7 +15,7 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
      return Scaffold(
-      backgroundColor: Colors.teal[300],
+      backgroundColor: Colors.teal[700],
       // ignore: prefer_const_constructors
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -25,6 +25,9 @@ class _FirstPageState extends State<FirstPage> {
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: Image.asset('assets/appreciated!.png'),
       ),
       drawer: Drawer(
         backgroundColor: Colors.teal[400],
