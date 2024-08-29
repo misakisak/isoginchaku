@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 final List<String> places = [
   'Men bathroom',
   'Women bathroom',
@@ -8,7 +7,7 @@ final List<String> places = [
   'Bathrooms for people using wheelchairs',
   'Bathrooms with ostomate',
   'Wireless LAN',
-  'Library providing wifi',
+  // 'Library providing wifi',
   'Smoking space',
   'Charging point',
   'Parking space'

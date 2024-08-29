@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
 part 'parkingLoc.g.dart';
 
 //SAMPLE DATA !!!
@@ -15,7 +14,6 @@ part 'parkingLoc.g.dart';
 //         "parkingCarType": "普通自動車・小型自動車・軽自動車（二輪車・トラックは除く）",
 //         "parkingPhone": null
 //     },
-
 
 @JsonSerializable()
 class LatLng {
@@ -55,22 +53,21 @@ class EachDetails {
     required this.parkingInfo,
     required this.parkingCarType,
     required this.parkingPhone,
-
   });
 
   // factory EachDetails.fromJson(Map<String, dynamic> json) => _$EachDetailsFromJson(json);　//下のやつに変えることで、もし中身がnullであっても動く
   factory EachDetails.fromJson(Map<String, dynamic> json) {
-     //nullだとエラー出るので、ここでnullの場合をunKnownとかにしてる
-     //もしかしたらparkingInfoとか0, 1, にしてるからnullの場合を0にしたら困るかも　(確認中)  
-     return EachDetails(
-          parkingTown: json['parkingTown'] ?? 'Unknown',
-          parkingTitle: json['parkingTitle'] ?? 'Unknown',
-          parkingLatitude: (json['parkingLatitude'] ?? 0.0).toDouble(),
-          parkingLongitude:(json['parkingLongitude'] ?? 0.0).toDouble(),
-          parkingInfo: (json['parkingInfo'] ?? 'Unknown'),
-          parkingCarType: (json['parkingCarType'] ?? 'Unknown'),
-          parkingPhone: (json['parkingPhone'] ?? 'Unknown'),
-     );
+    //nullだとエラー出るので、ここでnullの場合をunKnownとかにしてる
+    //もしかしたらparkingInfoとか0, 1, にしてるからnullの場合を0にしたら困るかも　(確認中)  
+    return EachDetails(
+      parkingTown: json['parkingTown'] ?? 'Unknown',
+      parkingTitle: json['parkingTitle'] ?? 'Unknown',
+      parkingLatitude: (json['parkingLatitude'] ?? 0.0).toDouble(),
+      parkingLongitude:(json['parkingLongitude'] ?? 0.0).toDouble(),
+      parkingInfo: (json['parkingInfo'] ?? 'Unknown'),
+      parkingCarType: (json['parkingCarType'] ?? 'Unknown'),
+      parkingPhone: (json['parkingPhone'] ?? 'Unknown'),
+    );
   }
 
   Map<String, dynamic> toJson() => _$EachDetailsToJson(this);
@@ -82,9 +79,7 @@ class EachDetails {
   final String parkingInfo;
   final String parkingCarType;
   final String parkingPhone;
-
 }
-
 
 @JsonSerializable()
 class ParkingList {
@@ -102,29 +97,26 @@ class ParkingList {
 }
 
 Future<List<EachDetails>> fetchParkingData() async {
-     const url = 'https://raw.githubusercontent.com/isoginchakus/data_set/main/parkingFinal.json';
+  const url = 'https://raw.githubusercontent.com/isoginchakus/data_set/main/parkingFinal.json';
 
-     try {
-          final response = await http.get(Uri.parse(url));
-          if (response.statusCode == 200) {
-               final List<dynamic> data = json.decode(response.body);
-               
-               // Debugging statement to print the fetched data
-               print("Fetched data from URL: $data");
-               
-               return data.map((json) => EachDetails.fromJson(json)).toList();
-          } 
-     } catch (e) {
-          print(e);
-     }
+  try {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      // Debugging statement to print the fetched data
+      // print("Fetched data from URL: $data");
+      return data.map((json) => EachDetails.fromJson(json)).toList();
+    } 
+  } catch (e) {
+    print(e);
+  }
+
+  // Fallback to local asset if network fails
+  final List<dynamic> data = json.decode(
+    await rootBundle.loadString('assets/taitoku_kitsuenjo.json'),
+  );
+  // Debugging statement to print the local data
+  // print("-------------------Stored Data used: $data");
   
-     // Fallback to local asset if network fails
-     final List<dynamic> data = json.decode(
-     await rootBundle.loadString('assets/taitoku_kitsuenjo.json'),
-     );
-     
-     // Debugging statement to print the local data
-     print("-------------------Stored Data used: $data");
-     
-     return data.map((json) => EachDetails.fromJson(json)).toList();
+  return data.map((json) => EachDetails.fromJson(json)).toList();
 }

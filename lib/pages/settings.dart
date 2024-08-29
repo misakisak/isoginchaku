@@ -25,10 +25,11 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: [
               DrawerHeader(
-                  child: Icon(
-                Icons.favorite,
-                color: Colors.white,
-              )),
+                child: Icon(
+                  Icons.favorite,
+                  color: Colors.white,
+                )
+              ),
               ListTile(
                 leading: Icon(
                   Icons.home,
@@ -138,6 +139,7 @@ class SettingsPage extends StatelessWidget {
               title: Text("バージョン"),
             ),
           ],
-        ));
+        )
+    );
   }
 }

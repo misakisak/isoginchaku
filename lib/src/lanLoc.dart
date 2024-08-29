@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-
 part 'lanLoc.g.dart';
 
 //SAMPLE DATA !!!
@@ -17,7 +16,6 @@ part 'lanLoc.g.dart';
      //    "lanURL": "https://www.city.koto.lg.jp/012105/koto_city_free_wi-fi.html",
      //    "lanNotes": null
      // },
-
 
 @JsonSerializable()
 class LatLng {
@@ -66,17 +64,17 @@ class EachDetails {
   factory EachDetails.fromJson(Map<String, dynamic> json) {
      //nullだとエラー出るので、ここでnullの場合をunKnownとかにしてる
      //もしかしたらlanSupplyAreaとか0, 1, にしてるからnullの場合を0にしたら困るかも　(確認中)  
-     return EachDetails(
-          lanTown: json['lanTown'] ?? 'Unknown',
-          lanName: json['lanName'] ?? 'Unknown',
-          lanLatitude: (json['lanLatitude'] ?? 0.0).toDouble(),
-          lanLongitude:(json['lanLongitude'] ?? 0.0).toDouble(),
-          lanSupplyArea: json['lanSupplyArea'] ?? 'Not Known',
-          lanSSID: json['lanSSID'] ?? 'Not Known',
-          lanPhone: json['lanPhone'] ?? 'Not Known',
-          lanURL: json['lanURL'] ?? 'Not Known',
-          lanNotes: json['lanNotes'] ?? 'No Data',
-     );
+    return EachDetails(
+        lanTown: json['lanTown'] ?? 'Unknown',
+        lanName: json['lanName'] ?? 'Unknown',
+        lanLatitude: (json['lanLatitude'] ?? 0.0).toDouble(),
+        lanLongitude:(json['lanLongitude'] ?? 0.0).toDouble(),
+        lanSupplyArea: json['lanSupplyArea'] ?? 'Not Known',
+        lanSSID: json['lanSSID'] ?? 'Not Known',
+        lanPhone: json['lanPhone'] ?? 'Not Known',
+        lanURL: json['lanURL'] ?? 'Not Known',
+        lanNotes: json['lanNotes'] ?? 'No Data',
+    );
   }
 
   Map<String, dynamic> toJson() => _$EachDetailsToJson(this);
@@ -90,7 +88,6 @@ class EachDetails {
   final String lanPhone;
   final String lanURL;
   final String lanNotes;
-  
 }
 
 
@@ -110,29 +107,28 @@ class LanList {
 }
 
 Future<List<EachDetails>> fetchLanData() async {
-     const url = 'https://raw.githubusercontent.com/isoginchakus/data_set/main/lanFinal.json';
+  const url = 'https://raw.githubusercontent.com/isoginchakus/data_set/main/lanFinal.json';
 
-     try {
-          final response = await http.get(Uri.parse(url));
-          if (response.statusCode == 200) {
-               final List<dynamic> data = json.decode(response.body);
-               
-               // Debugging statement to print the fetched data
-               print("Fetched data from URL: $data");
-               
-               return data.map((json) => EachDetails.fromJson(json)).toList();
-          } 
-     } catch (e) {
-          print(e);
-     }
+  try {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      
+      // Debugging statement to print the fetched data
+      // print("Fetched data from URL: $data");
+      
+      return data.map((json) => EachDetails.fromJson(json)).toList();
+    } 
+  } catch (e) {
+    print(e);
+  }
+
+  // Fallback to local asset if network fails
+  final List<dynamic> data = json.decode(
+    await rootBundle.loadString('assets/taitoku_kitsuenjo.json'),
+  );
+  // Debugging statement to print the local data
+  // print("-------------------Stored Data used: $data");
   
-     // Fallback to local asset if network fails
-     final List<dynamic> data = json.decode(
-     await rootBundle.loadString('assets/taitoku_kitsuenjo.json'),
-     );
-     
-     // Debugging statement to print the local data
-     print("-------------------Stored Data used: $data");
-     
-     return data.map((json) => EachDetails.fromJson(json)).toList();
+  return data.map((json) => EachDetails.fromJson(json)).toList();
 }

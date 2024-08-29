@@ -23,13 +23,13 @@ class MultipleNotifier extends ChangeNotifier {
 }
 
 class SingleNotifier extends ChangeNotifier {
-  String _currentLanguage = languages[0];
-  SingleNotifier();
-  String get currentLanguage => _currentLanguage;
-  updateLanguage(String value) {
-    if (value != _currentLanguage) {
-      _currentLanguage = value;
-      notifyListeners();
-    }
-  }
+     String _currentLanguage = languages[0];
+     SingleNotifier();
+     String get currentLanguage => _currentLanguage;
+     updateLanguage(String value) {
+          if (value != _currentLanguage) {
+               _currentLanguage = value;
+               notifyListeners();
+          }
+     } 
 }
